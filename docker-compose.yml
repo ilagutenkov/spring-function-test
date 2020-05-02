@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  rabbit:
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 4369:4369
+      - 5671:5671
+      - 25672:25672
+      - 15672:15672
