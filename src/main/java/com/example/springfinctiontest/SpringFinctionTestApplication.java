@@ -17,7 +17,10 @@ public class SpringFinctionTestApplication {
 
   @Bean
   public Function<String, String> upperCase() {
-    return String::toUpperCase;
+    return message->{
+      System.out.println(message);
+      return message.toUpperCase();
+    };
   }
 
 }
