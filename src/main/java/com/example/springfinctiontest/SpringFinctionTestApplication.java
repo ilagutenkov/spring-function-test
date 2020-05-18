@@ -6,13 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @SpringBootApplication
 @RestController
+@RequestMapping("/")
 public class SpringFinctionTestApplication {
 
   public static void main(String[] args) {
@@ -21,13 +25,12 @@ public class SpringFinctionTestApplication {
 
   EmitterProcessor<String> proc = EmitterProcessor.create();
 
-  @Bean
-  public Function<Flux<String>, Flux<String>> upperCase() {
-    return message -> {
-      return Flux.from(message.doOnNext(msg -> log.info("hello")))
-          .map(item -> item.toUpperCase())
-          .doOnNext(item->proc.onNext(item));
-    };
+  @RequestMapping("/upperCase/{name}")
+  public Mono<String> upperCase(@PathVariable String name) {
+    proc.onNext(name);
+
+    return Mono.just(name.toUpperCase());
+
   }
 
     @Bean
